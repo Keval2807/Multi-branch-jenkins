@@ -1,0 +1,73 @@
+pipeline {
+    agent any
+    environment {
+        pomfile = "C:/ProgramData/Jenkins/.jenkins/workspace/demo-pipeline-task-2/my-app/"
+        registry = "kevalk/jenkins-assignment"
+        registryCredential = 'dockerhub_id'
+        dockerImage = ''
+    }
+    tools {
+        maven "MAVEN"
+        jdk "JDK"
+    }
+    stages {
+        stage('Initialize'){
+            steps{
+                echo "PATH = ${MAVEN_HOME}/bin:${PATH}"
+                echo "MAVEN_HOME = /Maven/apache-maven-3.8.7"
+            }
+        }
+        stage('Build') {
+            steps {
+                dir(pomfile) {
+                bat 'mvn -B clean package'
+                }
+            }
+        }
+        stage('SonarQube analysis') {
+            steps {
+                withSonarQubeEnv('SonarQube 1.0') {
+                    dir(pomfile) {
+                        bat 'mvn clean package sonar:sonar' 
+                    }
+                }
+            }
+        }
+        stage("Quality Gate") {
+            steps {
+                timeout(time: 1, unit: 'HOURS') {
+                    // Parameter indicates whether to set pipeline to UNSTABLE if Quality Gate fails
+                    // true = set pipeline to UNSTABLE, false = don't
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+        stage('Building our image') {
+            steps{
+                script {
+                    dockerImage = docker.build registry 
+                }
+            }
+        }
+        stage('Deploy our image') {
+            steps{
+                script {
+                    docker.withRegistry( '', registryCredential ) { dockerImage.push() }
+                }
+            }
+        }
+        // stage('Cleaning up') {
+        //    steps{
+        //            bat "docker rmi $registry"
+        //    }
+        // }
+    }
+    post {
+       always {
+          junit(
+        allowEmptyResults: true,
+        testResults: '*/test-reports/.xml'
+      )
+      }
+   }
+}
