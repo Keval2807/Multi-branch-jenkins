@@ -70,9 +70,12 @@ pipeline {
         }
         
         stage('Deploy to Production') {
-            echo "--------Deploying to Production--------"
+            steps {
+                echo "--------Deploying to Production--------"
+            }
         }
     }
+    
     post {
        always {
           junit(
