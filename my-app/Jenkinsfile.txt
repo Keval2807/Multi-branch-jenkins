@@ -61,6 +61,17 @@ pipeline {
         //            bat "docker rmi $registry"
         //    }
         // }
+        
+        stage('Example') {
+            input {
+                message "Should we continue?"
+                ok "Yes, we should."
+            }  
+        }
+        
+        stage('Deploy to Production') {
+            echo "--------Deploying to Production--------"
+        }
     }
     post {
        always {
