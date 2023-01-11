@@ -63,11 +63,12 @@ pipeline {
         // }
     }
     post {
-       always {
-          junit(
-        allowEmptyResults: true,
-        testResults: '*/test-reports/.xml'
-      )
+        always {
+            emailext body: 'A Test Email', recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']], subject: 'Test'
+            junit(
+                allowEmptyResults: true,
+                testResults: '*/test-reports/.xml'
+          )
       }
    }
 }
