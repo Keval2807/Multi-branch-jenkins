@@ -56,11 +56,6 @@ pipeline {
                 }
             }
         }
-        // stage('Cleaning up') {
-        //    steps{
-        //            bat "docker rmi $registry"
-        //    }
-        // }
         
         stage('Example') {
             input {
@@ -75,6 +70,8 @@ pipeline {
         stage('Deploy to Production') {
             steps {
                 echo "--------Deploying to Production--------"
+                bat 'docker pull registry'
+                bat 'docker run -i -t'
             }
         }
     }
