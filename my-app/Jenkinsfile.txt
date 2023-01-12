@@ -58,8 +58,8 @@ pipeline {
         }
         stage('Deploy and Run our Image') {
             steps{
-                bat 'docker pull $registry'
-                bat 'docker run -i -t'
+                bat 'docker pull %registry%'
+                bat 'docker run -i -t %registry%'
             }
         }
     }
