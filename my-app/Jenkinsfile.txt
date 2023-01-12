@@ -67,13 +67,13 @@ pipeline {
             }
         }
         
-        stage('Deploy to Production') {
-            steps {
-                echo "--------Deploying to Production--------"
-                bat 'docker pull registry'
-                bat 'docker run -i -t'
-            }
-        }
+        //stage('Deploy to Production') {
+        //    steps {
+        //        echo "--------Deploying to Production--------"
+        //        bat 'docker pull registry'
+        //        bat 'docker run -i -t'
+        //    }
+        //}
     }
     
     post {
