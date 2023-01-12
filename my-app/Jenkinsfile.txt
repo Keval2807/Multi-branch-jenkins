@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         pomfile = "C:/ProgramData/Jenkins/.jenkins/workspace/multi-branch-demo-2_dev/my-app/"
-        registry = "kevalk/jenkins-assignment"
+        registry = "kevalk/my-app-1.0-snapshot ."
         registryCredential = 'dockerhub_id'
         dockerImage = ''
     }
