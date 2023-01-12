@@ -49,18 +49,19 @@ pipeline {
                 }
             }
         }
-        stage('Deploy our image') {
+        stage('Push our image') {
             steps{
                 script {
                     docker.withRegistry( '', registryCredential ) { dockerImage.push() }
                 }
             }
         }
-        // stage('Cleaning up') {
-        //    steps{
-        //            bat "docker rmi $registry"
-        //    }
-        // }
+        stage('Deploy and Run our Image') {
+            steps{
+                bat 'docker pull registry'
+                bat 'docker run -i -t'
+            }
+        }
     }
     post {
         always {
