@@ -1,4 +1,4 @@
 FROM openjdk:17
 EXPOSE 8080
-ADD target/my-app-1.0-snapshot.jar my-app-1.0-snapshot.jar
+COPY target/my-app-1.0-snapshot.jar my-app-1.0-snapshot.jar
 ENTRYPOINT ["java","-jar","/my-app-1.0-snapshot.jar"]
