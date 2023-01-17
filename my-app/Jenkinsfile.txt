@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         pomfile = "C:/ProgramData/Jenkins/.jenkins/workspace/multi-branch-demo-2_dev/my-app/"
-        registry = "kevalk/my-app-1.0-snapshot ."
+        registry = "kevalk/my-app-1.0-snapshot"
         registryCredential = 'dockerhub_id'
         dockerImage = ''
     }
@@ -17,14 +17,7 @@ pipeline {
                 bat "java -version"
             }
         }
-        stage('Build') {
-            steps {
-                dir(pomfile) {
-                bat 'mvn -B clean package'
-                }
-            }
-        }
-        stage('SonarQube analysis') {
+        stage('Build && SonarQube analysis') {
             steps {
                 withSonarQubeEnv('SonarQube 1.0') {
                     dir(pomfile) {
